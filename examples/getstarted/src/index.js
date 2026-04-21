@@ -40,7 +40,28 @@ module.exports = {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  async bootstrap({ strapi }) {},
+  async bootstrap({ strapi }) {
+    strapi.db.lifecycles.subscribe(async (event) => {
+      if (event.action === 'afterCreate') {
+        const result = event.result;
+
+        if (
+          typeof result.firstPublishedAt !== 'undefined' &&
+          typeof result.publishedAt !== 'undefined'
+        ) {
+          if (result.firstPublishedAt !== null && result.publishedAt === null) {
+            await strapi.documents(event.model.uid).update({
+              documentId: result.documentId,
+              data: {
+                // @ts-expect-error Experimental feature
+                firstPublishedAt: null,
+              },
+            });
+          }
+        }
+      }
+    });
+  },
 
   /**
    * An asynchronous destroy function that runs before

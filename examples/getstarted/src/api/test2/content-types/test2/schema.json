@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tests2",
+  "info": {
+    "singularName": "test2",
+    "pluralName": "tests2",
+    "displayName": "Issue 24662/24337 Reproducer"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "addresses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::address.address"
+    },
+    "test": {
+      "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "components": ["basic.team-members", "basic.simple", "basic.relation"]
+    }
+  }
+}
